@@ -1,14 +1,39 @@
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 const feedRoutes = require("./routes/feed");
 
 const app = express();
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
 // app.use(express.urlencoded()); // x-www-form-urlencoded <form>
 
 app.use(express.json()); // application/json
+app.use(
+  multer({ storage: fileStorage, filefilter: fileFilter }).single("image") // extract a single file stored in an 'image' field in the inc req
+);
 
 // serve the images statically to view them on the client
 app.use("/images", express.static(path.join(__dirname, "images")));

@@ -23,12 +23,18 @@ exports.createPost = (req, res, next) => {
     error.statusCode = 422; // We can name the property whatever we want.
     throw error;
   }
+  if (!req.file) {
+    const error = new Error("No image provided.");
+    error.statusCode = 422;
+    throw error;
+  }
+  const imageUrl = req.file.path; // multer generates the path variable
   const title = req.body.title;
   const content = req.body.content;
   const post = new Post({
     title: title,
     content: content,
-    imageUrl: "images/duck.png",
+    imageUrl: imageUrl,
     creator: { name: "Elate" },
   });
   post
