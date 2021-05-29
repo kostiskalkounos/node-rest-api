@@ -19,4 +19,14 @@ router.post(
 
 router.get("/post/:postId", feedController.getPost);
 
+// use put() to replace an existing post
+router.put(
+  "/post/:postId",
+  [
+    body("title").trim().isLength({ min: 5 }),
+    body("content").trim().isLength({ min: 5 }),
+  ],
+  feedController.updatePost
+);
+
 module.exports = router;
