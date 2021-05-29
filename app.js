@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
 
@@ -8,6 +9,9 @@ const app = express();
 // app.use(express.urlencoded()); // x-www-form-urlencoded <form>
 
 app.use(express.json()); // application/json
+
+// serve the images statically to view them on the client
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 app.use((req, res, next) => {
   // Set the headers for all responses to avoid CORS error on client side
@@ -21,6 +25,16 @@ app.use((req, res, next) => {
 });
 // GET /feed/posts
 app.use("/feed", feedRoutes);
+
+// error handling middleware
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  // this property exists by default and
+  // holds the message we passed in the Error() constructor
+  const message = error.message;
+  res.status(status).json({ message: message });
+});
 
 mongoose
   .connect(
