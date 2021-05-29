@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
 
+const authRoutes = require("./routes/auth");
 const feedRoutes = require("./routes/feed");
 
 const app = express();
@@ -49,6 +50,7 @@ app.use((req, res, next) => {
   next();
 });
 // GET /feed/posts
+app.use("/auth", autRoutes);
 app.use("/feed", feedRoutes);
 
 // error handling middleware
