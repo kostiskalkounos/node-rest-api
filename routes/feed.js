@@ -7,7 +7,7 @@ const router = express.Router();
 // GET /feed/posts
 router.get("/posts", feedController.getPosts);
 
-// POST /feed/post
+// POST /feed/post can send a body
 router.post(
   "/post",
   [
@@ -19,7 +19,7 @@ router.post(
 
 router.get("/post/:postId", feedController.getPost);
 
-// use put() to replace an existing post
+// use put() to replace an existing post and can send a body
 router.put(
   "/post/:postId",
   [
@@ -28,5 +28,8 @@ router.put(
   ],
   feedController.updatePost
 );
+
+// can't send a body but can encode data in the url
+router.delete("/post/:postId", feedController.deletePost);
 
 module.exports = router;
