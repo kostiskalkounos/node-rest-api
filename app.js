@@ -1,4 +1,6 @@
 const express = require("express");
+const mongoose = require("mongoose");
+
 const feedRoutes = require("./routes/feed");
 
 const app = express();
@@ -20,4 +22,14 @@ app.use((req, res, next) => {
 // GET /feed/posts
 app.use("/feed", feedRoutes);
 
-app.listen(8080);
+mongoose
+  .connect(
+    "mongodb+srv://kostis:kostis@cluster0.xomaa.mongodb.net/messages?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => {
+    app.listen(8080);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
