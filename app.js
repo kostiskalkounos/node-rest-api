@@ -50,7 +50,7 @@ app.use((req, res, next) => {
   next();
 });
 // GET /feed/posts
-app.use("/auth", autRoutes);
+app.use("/auth", authRoutes);
 app.use("/feed", feedRoutes);
 
 // error handling middleware
@@ -60,7 +60,8 @@ app.use((error, req, res, next) => {
   // this property exists by default and
   // holds the message we passed in the Error() constructor
   const message = error.message;
-  res.status(status).json({ message: message });
+  const data = error.data;
+  res.status(status).json({ message: message, data: data });
 });
 
 mongoose

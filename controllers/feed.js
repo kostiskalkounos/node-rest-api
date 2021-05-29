@@ -38,6 +38,7 @@ exports.createPost = (req, res, next) => {
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed, entered data is incorrect.");
     error.statusCode = 422; // We can name the property whatever we want.
+    error.data = errors.array();
     throw error;
   }
   if (!req.file) {
