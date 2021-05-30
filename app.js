@@ -70,13 +70,8 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
-    const httpServer = app.listen(8080);
-    const io = require("socket.io")(httpServer, {
-      cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"],
-      },
-    });
+    const server = app.listen(8080);
+    const io = require("./socket").init(server);
     // socket is the connection between the server and the client
     // it executes for every new client that connects
     io.on("connection", (socket) => {
