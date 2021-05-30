@@ -164,7 +164,8 @@ exports.deletePost = async (req, res, next) => {
     const user = await User.findById(req.userId);
     user.posts.pull(postId);
     await user.save();
-    res.status(200).json({ message: "Deteled post." });
+    io.getIO().emit("posts", { action: "delete", post: postId });
+    res.status(200).json({ message: "Deleted post." });
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;
